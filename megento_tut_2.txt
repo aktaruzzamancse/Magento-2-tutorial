@@ -1,0 +1,91 @@
+### Magneto 2 ###
+Call a static block in phtml file.
+http://blog.chapagain.com.np/magento-2-how-to-call-cms-static-block-from-template-phtml-file/
+echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('dehangmat_header_top')->toHtml();
+xml referce order change
+https://firebearstudio.com/blog/how-can-i-move-a-search-bar-in-navigation-div-in-magento-2-via-xml.html
+<move element="top.search" destination="page.top" after="catalog.topnav" />
+magento remove reference 
+http://magento.stackexchange.com/questions/93628/magento-2-remove-and-change-footer-links
+<referenceBlock name="footer_links" remove="true" />
+Magento 2 base file overwrite
+http://magento.stackexchange.com/questions/84550/magento-2-override-base-view-file
+### How to Display Products in Magento 2 Home Page? ###
+http://www.dckap.com/blog/magento-2/
+### end ##
+
+Magento 2 add js & css in xml
+http://www.webspeaks.in/2016/03/how-to-add-css-and-js-in-magento-2-custom-module.html
+<head>
+        <css src="Webspeaks_Fancyfeedback/css/my_css.css"/>
+        <script src="Webspeaks_Fancyfeedback/js/my_js.js"/>
+    </head>
+### Magento 2: Call a static block using xml ###
+<block type="Magento\Cms\Block\Block" name="Promo">
+  <arguments>
+   <argument name="block_id" xsi:type="string">promo</argument>
+  <arguments>
+</block>
+http://magento.stackexchange.com/questions/79708/magento-2-call-a-static-block-using-xml
+### Magento 2 get product gallery images on product listpage ###
+http://magento.stackexchange.com/questions/115674/magento-2-get-product-gallery-images-on-product-listpage-without-load-model-in-l
+<?php $product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());        
+                          $images = $product->getMediaGalleryImages();  
+                          foreach($images as $child){ ?>
+                             <img style="width: 80px; height:80px;" src="<?php echo $child->getUrl(); ?>" >
+                        <?php } ?>
+
+
+## end ##
+ ### magento 2 get category title ###
+http://magento.stackexchange.com/questions/101687/get-parent-name-of-current-category-on-category-list-pages-in-magento-2
+<?php 
+   $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+   $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+   echo $category->getParentCategory()->getName();
+?>
+
+### end ###
+### Magento 2 add static block in category product page ###
+http://magento.stackexchange.com/questions/79708/magento-2-call-a-static-block-using-xml
+<block class="Magento\Cms\Block\Block" name="Promo">
+    <arguments>
+        <argument name="block_id" xsi:type="string">promo</argument>
+    </arguments>
+</block>
+
+### end ###
+
+### Magento 2 gallery image with image resize ##
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+
+$_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+<?php $product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                          
+        
+                          $images = $product->getMediaGalleryImages(); 
+                          $k = 0; 
+                          foreach($images as $child){
+                            
+                            $productImage = $_imagehelper->init($product, 'product_page_image_large')
+                                ->setImageFile($child->getFile())->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)
+                                ->getUrl();
+                            
+                            if(!$k==0){?>
+                            
+                             <img data-id="smallthumbs-<?php echo $_product->getId();?>" data-img="<?php echo $productImage; ?>" style="width: 70px; height:47px;" src="<?php echo $productImage; ?>"/>
+                             
+                             
+                            <?php                            
+                            } 
+                            $k++;
+                            if($k==5){
+                                break;
+                            }
+                            } 
+                    ?>
+
+### end ###
+#Magento 2 admin broken ###
+http://www.dckap.com/blog/tag/magento-2-admin-links-not-working/
+#end ##
