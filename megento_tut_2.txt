@@ -744,4 +744,3 @@ $result1= $detailedInfoGroup;
 </div>
 ## end ##
 
-### Test pull ###
