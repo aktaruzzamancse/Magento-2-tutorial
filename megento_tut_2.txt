@@ -1,4 +1,8 @@
 ### Magneto 2 ###
+### inatall Magneto 2  ###
+https://www.ubertheme.com/magento-news/magento-2-demo-sample-data-admin-access/
+### end ##
+
 Call a static block in phtml file.
 http://blog.chapagain.com.np/magento-2-how-to-call-cms-static-block-from-template-phtml-file/
 echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('dehangmat_header_top')->toHtml();
@@ -20,13 +24,6 @@ http://www.webspeaks.in/2016/03/how-to-add-css-and-js-in-magento-2-custom-module
         <css src="Webspeaks_Fancyfeedback/css/my_css.css"/>
         <script src="Webspeaks_Fancyfeedback/js/my_js.js"/>
     </head>
-### Magento 2: Call a static block using xml ###
-<block type="Magento\Cms\Block\Block" name="Promo">
-  <arguments>
-   <argument name="block_id" xsi:type="string">promo</argument>
-  <arguments>
-</block>
-http://magento.stackexchange.com/questions/79708/magento-2-call-a-static-block-using-xml
 ### Magento 2 get product gallery images on product listpage ###
 http://magento.stackexchange.com/questions/115674/magento-2-get-product-gallery-images-on-product-listpage-without-load-model-in-l
 <?php $product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());        
@@ -89,3 +86,660 @@ $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
 #Magento 2 admin broken ###
 http://www.dckap.com/blog/tag/magento-2-admin-links-not-working/
 #end ##
+
+### get attribute value in xml ###
+http://www.mohannatarajan.com/magento/magento2-get-product-attribute-value
+### end ##
+
+### Product review group parcentage like 5,4 etc ###
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * @description:
+ *
+ */
+?>
+<?php
+    $_items = $block->getReviewsCollection()->getItems();
+    $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+?>
+<?php if (count($_items)):?>
+<div class="block review-list" id="customer-reviews">
+    <div class="block-title">
+        <strong><?php /* @escapeNotVerified */ echo __('Customer Reviews') ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="toolbar review-toolbar">
+            <?php echo $block->getChildHtml('toolbar') ?>
+        </div>
+        <ol class="items review-items">
+        <?php foreach ($_items as $_review):?>
+            <li class="item review-item" itemscope itemprop="review" itemtype="http://schema.org/Review">
+                <div class="review-title" itemprop="name"><?php echo $block->escapeHtml($_review->getTitle()) ?></div>
+                <?php if (count($_review->getRatingVotes())): ?>
+                    <div class="review-ratings">
+                    <?php foreach ($_review->getRatingVotes() as $_vote):
+                     ?>
+                    <div class="rating-summary item" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                        <span class="label rating-label"><span><?php echo $block->escapeHtml($_vote->getRatingCode()) ?></span></span>
+                        <div class="rating-result" title="<?php /* @escapeNotVerified */ echo $_vote->getPercent() ?>%">
+	                        <meta itemprop="worstRating" content = "1"/>
+	                        <meta itemprop="bestRating" content = "100"/>
+                            
+                            <span style="width:<?php /* @escapeNotVerified */ echo $_vote->getPercent() ?>%">
+                                <span itemprop="ratingValue"><?php /* @escapeNotVerified */ echo $_vote->getPercent() ?>%</span>
+                            </span>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <div class="review-content" itemprop="description">
+                    <?php echo nl2br($block->escapeHtml($_review->getDetail())) ?>
+                </div>
+                <div class="review-details">
+                    <p class="review-author">
+                        <span class="review-details-label"><?php /* @escapeNotVerified */ echo __('Review by')?></span>
+                        <strong class="review-details-value" itemprop="author"><?php echo $block->escapeHtml($_review->getNickname()) ?></strong>
+                    </p>
+                    <p class="review-date">
+                        <span class="review-details-label"><?php /* @escapeNotVerified */ echo __('Posted on') ?></span>
+                        <time class="review-details-value" itemprop="datePublished" datetime="<?php /* @escapeNotVerified */ echo $block->formatDate($_review->getCreatedAt(), $format) ?>"><?php /* @escapeNotVerified */ echo $block->formatDate($_review->getCreatedAt(), $format) ?></time>
+                    </p>
+                </div>
+            </li>
+        <?php endforeach; ?>
+        </ol>
+        <div class="toolbar review-toolbar">
+            <?php echo $block->getChildHtml('toolbar') ?>
+        </div>
+    </div>
+</div>
+<?php endif;?>
+<?php if (count($_items)):?>
+            
+    <?php 
+        $ratingone = 0;
+        $ratingtwo = 0;
+        $ratingthree = 0;
+        $ratingfour = 0;
+        $ratingfive = 0;
+        $ratingfivetottal = 0;
+        $ratingfourtottal = 0;
+        $ratingthreetottal = 0;
+        $ratingtwotottal = 0;
+        $ratingonetottal =0;
+        
+    foreach ($_items as $_review):?>
+        <?php 
+        foreach ($_review->getRatingVotes() as $_vote): 
+              $raingvalue = $_vote->getPercent();  
+        endforeach; 
+        
+                if($raingvalue=='20'){
+                  $ratingone = $ratingone+1;
+                  
+                }elseif($raingvalue=='40'){
+                    $ratingtwo = $ratingtwo+1;  
+                   
+                }elseif($raingvalue=='60'){
+                    $ratingthree = $ratingthree+1; 
+                    
+                }elseif($raingvalue=='80'){
+                    $ratingfour = $ratingfour+1;  
+                    
+                }else{
+                  $ratingfive = $ratingfive+1;  
+                    
+                }
+                
+        
+    endforeach; ?>
+    <div class="rating-chart">
+        <div><?php echo __('5 stars');?> <div class="customer-count"><?php echo $ratingfive.'x'; ?></div><div> <div style="width: <?php echo (($ratingfive*235)/100).'%'; ?> ;" class="percentage">&nbsp;</div></div></div>
+        <div><?php echo __('4 stars');?> <div class="customer-count"><?php echo $ratingfour.'x'; ?></div> <div><div style="width: <?php echo (($ratingfour*235)/100).'%'; ?> ;"  class="percentage">&nbsp;</div></div></div>
+        <div><?php echo __('3 stars');?> <div class="customer-count"><?php echo $ratingthree.'x'; ?></div> <div><div style="width: <?php echo (($ratingthree*235)/100).'%'; ?> ;"  class="percentage">&nbsp;</div></div></div>
+        <div><?php echo __('2 stars');?> <div class="customer-count"><?php echo $ratingtwo.'x'; ?></div><div><div style="width: <?php echo (($ratingtwo*235)/100).'%'; ?> ;" class="percentage">&nbsp;</div></div></div>
+        <div><?php echo __('1 stars');?> <div class="customer-count"><?php echo $ratingone.'x'; ?></div><div><div style="width: <?php echo (($ratingone*235)/100).'%'; ?> ;"  class="percentage">&nbsp;</div></div> </div>
+    </div>
+<?php endif;?>
+
+### end ##
+
+### icon resuorce ###
+http://magento2.techtwo.nl/pub/static/frontend/Magento/blank/en_US/css/docs/icons.html
+## end ##
+
+## Page ways conditonal ##
+http://magento.stackexchange.com/questions/93148/how-to-check-ishomepage-in-magento-2
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
+if ($request->getFullActionName() == 'cms_index_index') {
+    // is homepage
+}
+
+### end ###
+
+### Magneto 2 current category subcaeory ##
+http://magento.stackexchange.com/questions/120179/get-sub-category-of-current-category-in-magento2
+<?php
+if($this->getLayer()->getCurrentCategory()):
+$subcategories=$this->getLayer()->getCurrentCategory()->getCategories($this->getLayer()->getCurrentCategory()->getId());
+    /* count and check the category have any sub category */
+    if($subcategories->count()>0){
+        ?>
+        <h3 class="cat-title"><?php echo __('categories'); ?></h3>
+        <ul>
+        <?php
+        foreach($subcategories as $subcategory){
+            //echo "<pre>";
+            //print_r($subcategory->getData());
+            echo'<li><a href="'.$subcategory->getRequestPath().'">'.$subcategory->getName().'</a></li>' ;
+        }?>
+        </ul>
+        <?php 
+
+    }else{
+        // category does not have any sub category
+    }
+else:
+        // category does not have any sub category
+
+endif;
+?>
+### end   ###
+
+#### Magento 2 Refernce Layout ##
+<referenceContainer name="header.panel">
+</referenceContainer>
+<referenceContainer name="header.container">
+	 <referenceContainer name="header-wrapper">
+</referenceContainer>
+</referenceContainer>
+## end ##
+
+### Home url In pthtml ###
+$this->getBaseUrl()
+### end ##
+
+### How to call ptml file in xml ##
+<block class="Magento\Framework\View\Element\Template" name="home_slider_large" as="home_slider_large" template="Magento_Theme::home/home_slider_large.phtml" after="-">
+ 
+      <arguments>
+          
+	<argument translate="true" name="title" xsi:type="string">Home slider</argument>
+        
+	</arguments>
+   
+ </block>
+
+### end ##
+### How to get Magento 2 Product attribute Value ##
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+<?php 
+  $_product = $objectManager->get('Magento\Catalog\Model\Product')->load($_item->getId());
+    $attribute_code = 'manufacturer';
+   echo $_product->getResource()->getAttribute($attribute_code)->getFrontend()->getValue($_product);
+ ?>
+## end ##
+
+### Magento 2 bundle product image ##
+<?php
+                                                $thisproduct = $this->_objectManager->create('Magento\Catalog\Model\Product')->load($bundle->getId());
+                                                $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');            
+                                                $productImage = $_imagehelper->init($thisproduct, 'product_page_image_large')->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(140,122)->getUrl();                                             
+                                                
+                                            ?>
+## end ##
+
+#Magento 2 how to get current product data ## 
+http://magento.stackexchange.com/questions/109622/how-to-get-product-id-to-my-custom-module
+<?php 
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');//get current product
+    echo $product->getId();
+    echo $product->getName();
+?>
+### end ###
+
+### Add extra tab in Proudct page ###
+http://magento.stackexchange.com/questions/106299/add-new-tab-on-product-detail-page-magento-2
+
+<referenceBlock name="product.info.details">
+        <block class="Magento\Catalog\Block\Product\View" name="deliveryinfo.tab" as="deliveryinfo" template="product/view/delivery_info.phtml" group="detailed_info" >
+        <arguments>
+        <argument translate="true" name="title" xsi:type="string">Product Question</argument>
+        </arguments>
+        </block>
+        </referenceBlock>
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('delivery_info')->toHtml(); ?>
+
+### Magento 2 get current category subcategories with image ###
+http://magento.stackexchange.com/questions/110003/getting-sub-category-images-in-magento2
+
+
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+$subcats = $category->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<ul>
+    <?php
+    foreach ($subcats as $subcat) {
+        if ($subcat->getIsActive()) {
+            $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+            $_outputhelper = $this->helper('Magento\Catalog\Helper\Output');
+            $subcaturl = $subcat->getUrl();
+
+            $_imgHtml = '';
+            if ($_imgUrl = $_category->getImageUrl()) {
+
+                $_imgHtml = '<img src="' . $_imgUrl . '" />';
+                $_imgHtml = $_outputhelper->categoryAttribute($_category, $_imgHtml, 'image');
+
+                /* @escapeNotVerified */
+                echo '<li><a href="' . $subcaturl . '" class="block-promo" title="' . $subcat->getName() . '">' . $_imgHtml . '<span style="background-color: rgba(255,255,255,0.9)" class="content bg-white"><strong>Place custom code here</strong><br><br><span class="action more button">Learn More</span></span></a></li>';
+            }
+        }
+    } ?>
+</ul>
+### end ###
+
+### call phtml file magento 2 ##
+http://stackoverflow.com/questions/34288366/magento-2-how-to-call-a-custom-phtml-file-in-another-phtml-file-xml-layout-s
+<?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/test.phtml")->toHtml();?>
+<?php include ($block->getTemplateFile('Magento_Theme::html/test.phtml')) ?>
+
+### Miravat blog author Name ##
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $author_details = $objectManager->get('Mirasvit\Blog\Model\Author')->load($post->getAuthorId());
+            echo ' Author name : ' . $author_details->getName();
+## end ##
+
+### Magneto 2 skin,media url in pthtml  ###
+http://webkul.com/blog/how-to-get-url-in-magento2/
+
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance(); //instance of\Magento\Framework\App\ObjectManager
+$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface'); 
+$currentStore = $storeManager->getStore();
+
+
+$baseUrl = $currentStore->getBaseUrl();
+//Output link will be like this:
+//http://magento2.webkul.com/marketplace
+
+$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+//Media url output link will be like this:
+//http://magento2.webkul.com/marketplace/pub/media
+
+
+$linkUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
+//Output link will be link this:
+//http://magento2.webkul.com/marketplace
+
+### end ###
+
+
+### xml data pass in phtml file ##
+{{block class="Magento\Framework\View\Element\Template" product_id="10" template="Magento_Catalog::product/view/static_product.phtml"}}
+
+in phtml 
+
+echo $this->getProductId();
+
+### end 
+
+## how to get current product qty ##
+ <?php
+                                $stockRegistry = $_objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface');
+                                /* Get stock item  */
+                                $stockitem = $stockRegistry->getStockItem($_product->getId(),$_product->getStore()->getWebsiteId());
+                                echo $stockitem->getQty();
+                                ?>
+http://blog.chapagain.com.np/magento-2-get-product-stock-quantity-and-other-stock-information/
+http://blog.gagglethread.com/magento2/magento2-get-stock-item/
+
+## end ##
+
+## how to magento 2 get custom variable value ###
+ <?php
+                               $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                               $model = $_objectManager->get('Magento\Variable\Model\Variable')->loadByCode('next-day-time');
+                               $plain_value = $model->getPlainValue();
+                               $html_value = $model->getHtmlValue();
+                               $name = $model->getName();
+                               if ($_product->getIsSalable()):
+                               echo "<li>$name</li>";
+                               endif;
+                                ?>
+http://stackoverflow.com/questions/36499623/get-magento-2-custom-variable-in-phtml-file
+### end ###
+
+### Magento 2 upsell to select box ##
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
+?>
+
+<?php
+$_product_price = 0;
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+//echo $block->getProductPrice($product);
+$product_main_price = $product->getPriceInfo()->getPrice('final_price')->getAmount()->getBaseAmount();
+switch ($type = $block->getType()) {
+
+    case 'related-rule':
+        if ($exist = $block->hasItems()) {
+            $type = 'related';
+            $class = $type;
+
+            $image = 'related_products_list';
+            $title = __('Related Products');
+            $items = $block->getAllItems();
+            $limit = $block->getPositionLimit();
+            $shuffle = (int) $block->isShuffled();
+            $canItemsAddToCart = $block->canItemsAddToCart();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+        }
+    break;
+
+    case 'related':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Related $block */
+        if ($exist = $block->getItems()->getSize()) {
+            $type = 'related';
+            $class = $type;
+
+            $image = 'related_products_list';
+            $title = __('Related Products');
+            $items = $block->getItems();
+            $limit = 0;
+            $shuffle = 0;
+            $canItemsAddToCart = $block->canItemsAddToCart();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+        }
+    break;
+
+    case 'upsell-rule':
+        if ($exist = $block->hasItems()) {
+            $type = 'upsell';
+            $class = $type;
+
+            $image = 'upsell_products_list';
+            $title = __('We found other products you might like!');
+            $items = $block->getAllItems();
+            $limit = $block->getPositionLimit();
+            $shuffle = (int) $block->isShuffled();
+
+            $showWishlist = false;
+            $showCompare = false;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'upsell':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Upsell $block */
+        if ($exist = count($block->getItemCollection()->getItems())) {
+            $type = 'upsell';
+            $class = $type;
+
+            $image = 'upsell_products_list';
+            $title = __('We found other products you might like!');
+            $items = $block->getItemCollection()->getItems();
+            $limit = $block->getItemLimit('upsell');
+            $shuffle = 0;
+
+            $showWishlist = false;
+            $showCompare = false;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'crosssell-rule':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+        if ($exist = $block->hasItems()) {
+            $type = 'crosssell';
+            $class = $type;
+
+            $image = 'cart_cross_sell_products';
+            $title = __('More Choices:');
+            $items = $block->getItemCollection();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'crosssell':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+        if ($exist = $block->getItemCount()) {
+            $type = 'crosssell';
+            $class = $type;
+
+            $image = 'cart_cross_sell_products';
+            $title = __('More Choices:');
+            $items = $block->getItems();
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'new':
+        if ($exist = $block->getProductCollection()) {
+            $type = 'new';
+            $mode = 'grid';
+            $type = $type . ' ' . $mode;
+
+            $class = 'widget' . ' ' . $type;
+
+            $image = 'new_products_content_widget_grid';
+            $title = __('New Products');
+            $items = $exist;
+
+            $showWishlist = true;
+            $showCompare = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = ($mode == 'list') ? true : false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'other':
+    break;
+}
+?>
+
+<?php if ($exist):?>
+
+    <?php if ($type == 'related' || $type == 'upsell'): ?>
+        <?php if ($type == 'related'): ?>
+            <div style="clear:both;" class="block <?php /* @escapeNotVerified */ echo $class; ?>" data-mage-init='{"relatedProducts":{"relatedCheckbox":".related.checkbox"}}' data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>" data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>">
+        <?php else: ?>
+            <div class="block <?php /* @escapeNotVerified */ echo $class; ?>" data-mage-init='{"upsellProducts":{}}' data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>" data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>">
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="block <?php /* @escapeNotVerified */ echo $class; ?>">
+    <?php endif; ?>
+ 
+    
+    
+        
+
+                    <div class="display-size">
+                        <label><?php echo __('Other size?');?></label>
+                        <select id="dynamic_select">
+                        <option>Selecteer uw maat</option>
+                        <?php $iterator = 1; ?>
+                        <?php
+                        foreach ($items as $_item):
+                        
+                        $_product_price = 0;
+                        $available = ''; 
+                        $product = '';
+                            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                            $product = $objectManager->get('Magento\Catalog\Model\Product')->load($_item->getId());
+                          
+                             /* @escapeNotVerified */ //echo $block->getProductPrice($_item); 
+                              
+                              
+                           // $_product_price = $product->getPriceInfo()->getPrice('final_price')->getAmount()->getBaseAmount();
+                            $_product_price = $_item->getFinalPrice();
+                            //echo $_item->getId();
+ 
+                           
+					       $_product_price_dif = ((float)$product_main_price - (float)$_product_price);
+            
+                           
+                        
+                        $attribute_code = 'schermgrootte';
+                        $dimensionInches = '';
+                        $dimensionInches =  $product->getResource()->getAttribute($attribute_code)->getFrontend()->getValue($product);
+                        if($dimensionInches != "") {
+                        ?>
+                        <?php  $dimensionInches; } ?>
+                        <?php 
+                        $option_name = '';
+                        if($_product_price_dif > 0){
+                       $option_name =  __('Save ').' &euro; '.$_product_price_dif;    } 
+                       else{ 
+                         $_product_price_diff = ((float)$_product_price)-(float)$product_main_price;   
+                            
+                       $option_name = __('Surcharge ').' &euro; '.$_product_price_diff;
+                         }?>
+				
+                  
+                        
+                            <option value="<?php /* @escapeNotVerified */ echo $block->getProductUrl($_item) ?>" class="first"><?php echo $dimensionInches.' -&nbsp;'.$option_name;?></option>
+                           
+                     <?php 
+                     
+                     endforeach ?>
+                        </select> 
+                        <script type="text/javascript">jQuery(function(){
+      
+                          jQuery('#dynamic_select').on('change', function () {
+                              var url = jQuery(this).val(); // get selected value
+                              if (url) { // require a URL
+                                  window.location = url; // redirect
+                              }
+                              return false;
+                          });
+                        });</script> 
+    
+    </div>
+      
+
+</div>
+<?php endif;?>
+
+
+## end ##
+
+
+### product tab order change ##
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="cleafix detailed-wrap">
+
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):
+$result1= $detailedInfoGroup;
+//print_r($result1);
+    $result[0] = $result1[1];
+    $result[1] = $result1[0];
+    $result[2] = $result1[2];
+    $result[3] = $result1[3];
+    $result[4] = $result1[4];
+    $result[5] = $result1[5];
+    foreach($result1 as $r1_key => $r1_value){
+        if(!array_key_exists($r1_key,$result)){
+            $result[$r1_key] = $result1[$r1_key];
+        }
+    }
+?>
+    <div class="product info detailed">
+    
+        <?php $layout = $block->getLayout(); ?>
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+            <?php foreach ($result as $name):?>
+                <?php
+                    $html = $layout->renderElement($name);
+                    if (!trim($html)) {
+                        continue;
+                    }
+                    $alias = $layout->getElementAlias($name);
+                    $label = $block->getChildData($alias, 'type');
+                
+                ?>
+                <div class="data item title"
+                     aria-labeledby="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title"
+                     data-role="collapsible" id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>">
+                    <a class="data switch"
+                       tabindex="-1"
+                       data-toggle="switch"
+                       href="#<?php /* @escapeNotVerified */ echo $alias; ?>"
+                       id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title">
+                        <?php /* @escapeNotVerified */ echo $label; ?>
+                    </a>
+                </div>
+                <div class="data item content" id="<?php /* @escapeNotVerified */ echo $alias; ?>" data-role="content">
+                    <?php /* @escapeNotVerified */ echo $html; ?>
+                </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+<?php endif; ?>
+<div class="detailed-right">
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('garantie_uitbreiding')->toHtml();?>
+</div>
+</div>
+## end ##
