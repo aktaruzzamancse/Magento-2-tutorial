@@ -94,7 +94,7 @@ http://www.mohannatarajan.com/magento/magento2-get-product-attribute-value
 ### Product review group parcentage like 5,4 etc ###
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright Â© 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -428,7 +428,7 @@ http://stackoverflow.com/questions/36499623/get-magento-2-custom-variable-in-pht
 ### Magento 2 upsell to select box ##
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright Â© 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -682,7 +682,7 @@ switch ($type = $block->getType()) {
 ### product tab order change ##
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright Â© 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
 
@@ -743,3 +743,5 @@ $result1= $detailedInfoGroup;
 </div>
 </div>
 ## end ##
+
+### Test pull ###
